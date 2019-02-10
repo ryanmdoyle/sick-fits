@@ -1,3 +1,12 @@
-const Mutations = {};
+// this is where your db mutations go!
+
+const Mutations = {
+  createDog(parent, args, ctx, info) {
+    global.dogs = global.dogs || []
+    const newDog = { name: args.name }
+    global.dogs.push(newDog)
+    console.log(args);
+  }
+};
 
 module.exports = Mutations;
