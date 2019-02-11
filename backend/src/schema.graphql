@@ -1,11 +1,16 @@
-type Dog {
-  name: String!
-}
+# the import below (should be commented) imports the Schema/types from datamodel so you don't need to re-type
+# import * from './generated/prisma.graphql'
 
 type Mutation {
-  createDog(name: String!): Dog
+  createItem(
+    title: String,
+    description: String, 
+    price: Int, 
+    image: String,
+    largeImage: String
+  ): Item!
 }
 
 type Query {
-  dogs: [Dog]!
+  items: [Item]!
 }

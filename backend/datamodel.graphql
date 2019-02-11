@@ -1,5 +1,20 @@
+# Schemas for Prisma
+# !!! Must re-deploy to prisma after updates to pull down updated prisma.graphql file
+
 type User {
   id: ID! @unique
   name: String!
   email: String!
+}
+
+type Item {
+  id: ID! @unique
+  title: String!
+  description: String!
+  image: String
+  largeImage: String
+  price: Int!
+  createdAt: DateTime! #available type via Prisma
+  updatedAt: DateTime!
+  # user: User!
 }
