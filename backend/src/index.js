@@ -12,7 +12,7 @@ const server = createServer(); //make instance of GraphQL server from createServ
 server.start({ //start the GraphQL server
   cors: { // only allow from frontend server (frontend_url)
     credentials: true,
-    orgin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL,
   },
 }, postStart => { //callback once connection is created
   console.log(`Server now running on http://localhost:${postStart.port}`);
