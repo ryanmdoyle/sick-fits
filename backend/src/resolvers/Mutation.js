@@ -5,6 +5,7 @@ Alternatively, it could be imported to this file.
 Sets up public facing GraphQL yoga queries to communicate with Prisma
 */
 const Mutations = {
+  
   async createItem(parent, args, ctx, info) {
     const item = await ctx.db.mutation.createItem({
       data: {
@@ -13,6 +14,7 @@ const Mutations = {
     }, info)
     return item; //the methods are Promises, so make async/await and return
   },
+  
   updateItem(parent, args, ctx, info) {
     // Makes copy of updates.  You don't want to update the ID with the mutation, but you need to reference it later.
     const updates = {...args};
@@ -25,6 +27,16 @@ const Mutations = {
         id: args.id,
       }
     }, info)
+  },
+
+  async deleteItem(parent, args, ctx, info) {
+    const where = {id: args.id};
+    //find item
+    const item = await ctx.db.query.item({where}, `{id title}`);
+    //check ownership of item or persmission to delete
+    // //todo
+    //delete item
+    return ctx.db.mutation.deleteItem({where}, info);
   }
 };
 
