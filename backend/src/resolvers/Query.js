@@ -3,8 +3,9 @@
 const { forwardTo } = require('prisma-binding');
 
 const Query = {
-  // If a yoga query is the exact same as the prisma db, you can forward it. Useful is no auth, etc is needed.
-  items: forwardTo('db')
+  // If a yoga query is the exact same as the prisma db query you can just "forward" it. Useful if no auth, etc is needed.
+  items: forwardTo('db'),
+  item: forwardTo('db'),
   // async items(parent, args, ctx, info) {
   //   const items = await ctx.db.query.items();
   //   return items;
