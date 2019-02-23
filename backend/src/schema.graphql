@@ -1,4 +1,4 @@
-# the import below (should be commented) imports the Schema/types from datamodel so you don't need to re-type
+# the import below (should be commented) imports the Schema/types from Prisma generated methods (like createItem from prisma.graphql) so you don't need to re-type all of them
 # import * from './generated/prisma.graphql'
 
 type Mutation {
@@ -23,7 +23,7 @@ type Mutation {
 }
 
 type Query {
-  items: [Item]!
+  items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, first: Int): [Item]!
   item(where: ItemWhereUniqueInput!): Item
   itemsConnection(where: ItemWhereInput): ItemConnection!
 }

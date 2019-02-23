@@ -4,10 +4,11 @@ import gql from 'graphql-tag';
 import styled from 'styled-components'
 import Item from './Item'
 import Pagination from './Pagination';
+import {perPage} from '../config';
 
 const ALL_ITEMS_QUERY = gql`
-  query ALL_ITEMS_QUERY {
-    items {
+  query ALL_ITEMS_QUERY($skip: Int = 0, $first: Int = ${perPage}) {
+    items(orderBy: createdAt_DESC, skip: $skip, first: $first) {
       id
       title
       price
@@ -31,11 +32,16 @@ const ItemsList = styled.div`
 `
 
 class Items extends Component {
+
   render() {
     return (
       <Center>
         <Pagination page={this.props.page} />
-        <Query query={ALL_ITEMS_QUERY}>
+        <Query 
+        query={ALL_ITEMS_QUERY} 
+        variables = {{first: perPage , skip: (this.props.page-1) * perPage }}
+        fetchPolicy='network-only' //really should remove for caching!
+        >
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>
             if (error) return <p>Error: {error.message}</p>
