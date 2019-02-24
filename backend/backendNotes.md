@@ -1,5 +1,30 @@
 # Prisma & GraphQL Yoga
 
+## Authentication
+
+### Using Enums
+With enums, you are setting pre-defined types. With an enum, you cannot just pass the types as a string, you need to 'set' it with an object, as shown below:
+  ```
+  async signup(parent, args, ctx, info) {
+    args.email = args.email.toLowerCase();
+    const password = await bcrypt.hash(args.password, 10);
+    const user = await ctx.db.mutation.createUser({
+      data: {
+        name: args.name,
+        email: args.email,
+        password: password,
+        permissions: { set: ['USER'] }
+      }
+    }, info)
+  }
+  ```
+
+### Authentication in Cookies (vs Local Storage)
+We want the server to render out the correct views based on if a user is logged in or not. In this project we will be using cookies to store the JWT and transfer that back and fourth to the server.  
+  - You can do this with local storage as well, but there would be a delay in rendering because:
+    - When using localstorage, the app has to check the local storage once the server responds to either show information or not.
+    - Cookies are automatically sent with all requests to the server, so you can always have the users token available to handle requests and rendering server-side with each request from the client.
+
 ## Models & Interactions
 
 ### Create Types in Prisms

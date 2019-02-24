@@ -1,4 +1,5 @@
 # the import below (should be commented) imports the Schema/types from Prisma generated methods (like createItem from prisma.graphql) so you don't need to re-type all of them
+# Importing the types from prisma.graphql let you return those types in the Schemas defined below (like return a User when signing up)
 # import * from './generated/prisma.graphql'
 
 type Mutation {
@@ -20,6 +21,12 @@ type Mutation {
   deleteItem(
     id: ID!,
   ): Item
+
+  signup(
+    email: String!, 
+    password: String!, 
+    name: String!
+  ): User!
 }
 
 type Query {

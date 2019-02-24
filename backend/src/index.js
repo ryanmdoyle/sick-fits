@@ -1,12 +1,13 @@
 // Starts up node server
 // This is the entry point for the app, it needs all .env variables, the server, the db, all that good stuff
 require('dotenv').config({ path: 'variables.env' });
-const createServer = require('./createServer');
-const db = require('./db')
+const cookieParser = require('cookie-parser');
 
+const createServer = require('./createServer');
 const server = createServer(); //make instance of GraphQL server from createServer.js
 
-// Use express middleware to handle cookies`
+server.express.use(cookieParser());
+
 // Use express middleware to populate current user
 
 server.start({ //start the GraphQL server
