@@ -5,7 +5,7 @@ Alternatively, it could be imported to this file.
 Sets up public facing GraphQL yoga queries to communicate with Prisma
 */
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const Mutations = {
   
