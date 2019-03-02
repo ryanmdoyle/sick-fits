@@ -77,7 +77,7 @@
         "trailingComma": "es5",
         "jsxSingleQuote": true,
         "singleQuote": true,
-        "printWidth": 100
+        "printWidth": 80
       }
     ]
   },
