@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Mutations = {
-  
+
   async createItem(parent, args, ctx, info) {
     const item = await ctx.db.mutation.createItem({
       data: {
@@ -17,15 +17,15 @@ const Mutations = {
     }, info)
     return item; //the methods are Promises, so make async/await and return
   },
-  
+
   updateItem(parent, args, ctx, info) {
     // Makes copy of updates.  You don't want to update the ID with the mutation, but you need to reference it later.
-    const updates = {...args};
+    const updates = { ...args };
     // remove ID from the updates object so 'updates' is only the actual updates to the db reference
     delete updates.id;
     // run update method (the updateItem method within the Prisma API generated in prisma.graphql) using the new updates object, where the id matches the original id
     return ctx.db.mutation.updateItem({
-      data: updates, 
+      data: updates,
       where: {
         id: args.id,
       }
@@ -33,13 +33,13 @@ const Mutations = {
   },
 
   async deleteItem(parent, args, ctx, info) {
-    const where = {id: args.id};
+    const where = { id: args.id };
     //find item
-    const item = await ctx.db.query.item({where}, `{id title}`);
+    const item = await ctx.db.query.item({ where }, `{id title}`);
     //check ownership of item or persmission to delete
     // //todo
     //delete item
-    return ctx.db.mutation.deleteItem({where}, info);
+    return ctx.db.mutation.deleteItem({ where }, info);
   },
 
   async signup(parent, args, ctx, info) {
@@ -55,7 +55,7 @@ const Mutations = {
     }, info)
     // create JWT token to auto login after signup and set cookie to pass to future requests
     // accepts the user id, and then a "secret" that's app/site specific
-    const token = jwt.sign({ userId: user.id}, process.env.APP_SECRET);
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 31,
@@ -63,7 +63,24 @@ const Mutations = {
 
     //return user to browser
     return user;
-  }
+  },
+
+  async signin(parent, { email, password }, ctx, info) {
+    const user = await ctx.db.query.user({ where: { email: email } });
+    if (!user) {
+      throw new Error(`No such iser found for the email ${email}`);
+    }
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      throw new Error(`password is not valid!`);
+    }
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 31,
+    });
+    return user;
+  },
 };
 
 module.exports = Mutations;
